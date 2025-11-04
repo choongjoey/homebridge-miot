@@ -31,14 +31,14 @@ class UiServer extends HomebridgePluginUiServer {
 
     const username = params.username;
     const password = params.password;
-    const verifyUrl = params.verifyUrl;
-    const twoFaTicket = params.twoFaTicket;
+    const notificationUrl = params.verifyUrl; // Keep param name for backward compatibility
+    const emailCode = params.twoFaTicket; // Keep param name for backward compatibility
     const isShowAll = !!params.isShowAll;
 
     // try to login
-    if (verifyUrl && twoFaTicket) {
+    if (notificationUrl && emailCode) {
       try {
-        await miCloud.loginTwoFa(verifyUrl, twoFaTicket);
+        await miCloud.loginTwoFa(notificationUrl, emailCode);
       } catch (err) {
         return {
           success: false,
@@ -52,7 +52,7 @@ class UiServer extends HomebridgePluginUiServer {
         if (err instanceof Errors.TwoFactorRequired) {
           return {
             success: false,
-            error: 'Two factor authentication required, please visit the specified url and retry login.',
+            error: 'Two factor authentication required. An email with a verification code will be sent automatically. Please check your email, enter the code below, and retry login.',
             url: err.notificationUrl
           }
         }
@@ -150,12 +150,12 @@ class UiServer extends HomebridgePluginUiServer {
 
     const username = params.username;
     const password = params.password;
-    const verifyUrl = params.verifyUrl;
-    const twoFaTicket = params.twoFaTicket;
+    const notificationUrl = params.verifyUrl; // Keep param name for backward compatibility
+    const emailCode = params.twoFaTicket; // Keep param name for backward compatibility
 
-    if (verifyUrl && twoFaTicket) {
+    if (notificationUrl && emailCode) {
       try {
-        await miCloud.loginTwoFa(verifyUrl, twoFaTicket);
+        await miCloud.loginTwoFa(notificationUrl, emailCode);
       } catch (err) {
         return {
           success: false,
@@ -169,7 +169,7 @@ class UiServer extends HomebridgePluginUiServer {
         if (err instanceof Errors.TwoFactorRequired) {
           return {
             success: false,
-            error: 'Two factor authentication required, please visit the specified url and retry login.',
+            error: 'Two factor authentication required. An email with a verification code will be sent automatically. Please check your email, enter the code below, and retry login.',
             url: err.notificationUrl
           }
         }

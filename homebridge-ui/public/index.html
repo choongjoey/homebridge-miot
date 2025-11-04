@@ -50,10 +50,14 @@
             <button class="btn btn-primary btn-login" id="getAllDevices" type="button">Discover All Devices</button>
           </div>
           <div class="text-center mt-sm-3 two-factor-section miot-message" style="display: none">
-            <a id="twoFactorAuthLink" class="btn btn-danger" href="#" target="_blank" style="color:#fff;">2FA required! Click here, paste the received code in the input below and retry!</a>
+            <div class="alert alert-warning" role="alert">
+              <strong>Two-Factor Authentication Required!</strong><br>
+              An email with a verification code has been sent to your registered email address.<br>
+              Please check your email, enter the code below, and click "Discover All Devices" again.
+            </div>
             <div class="col">
-              <label for="ticketInput">2FA Code</label>
-              <input class="form-control" id="ticketInput" type="text">
+              <label for="ticketInput">Email Verification Code</label>
+              <input class="form-control" id="ticketInput" type="text" placeholder="Enter code from email">
             </div>
           </div>
           <div class="text-center device-table miot-message" style="display: none">
@@ -100,10 +104,14 @@
             <button class="btn btn-primary btn-login" id="loginToMiCloud" type="button">Login to MiCloud</button>
           </div>
           <div class="text-center mt-sm-3 two-factor-section-micloud-session miot-message" style="display: none">
-            <a id="twoFactorAuthMiCloudSessionLink" class="btn btn-danger" href="#" target="_blank" style="color:#fff;">2FA required! Click here, paste the received code in the input below and retry!</a>
+            <div class="alert alert-warning" role="alert">
+              <strong>Two-Factor Authentication Required!</strong><br>
+              An email with a verification code has been sent to your registered email address.<br>
+              Please check your email, enter the code below, and click "Login to MiCloud" again.
+            </div>
             <div class="col">
-              <label for="ticketInput2">2FA Code</label>
-              <input class="form-control" id="ticketMiCloudSessionInput" type="text">
+              <label for="ticketMiCloudSessionInput">Email Verification Code</label>
+              <input class="form-control" id="ticketMiCloudSessionInput" type="text" placeholder="Enter code from email">
             </div>
           </div>
           <div class="text-center micloud-session miot-message" style="display: none">
@@ -154,7 +162,7 @@
           <div class="form-group">
             <label for="deviceModelInputMetadata">Model</label>
             <input class="form-control" id="deviceModelInputMetadata" required type="text">
-            <small id="deviceModelHelp" class="form-text text-muted">The unique model of your device, e.g. zhimi.fan.za5</small>
+            <small id="deviceModelHelpMetadata" class="form-text text-muted">The unique model of your device, e.g. zhimi.fan.za5</small>
           </div>
           <div class="text-center">
             <button class="btn btn-primary" id="getDeviceMetadata" type="button">Fetch metadata</button>
