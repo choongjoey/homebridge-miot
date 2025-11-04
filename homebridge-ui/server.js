@@ -33,12 +33,20 @@ class UiServer extends HomebridgePluginUiServer {
     const password = params.password;
     const notificationUrl = params.verifyUrl; // Keep param name for backward compatibility
     const emailCode = params.twoFaTicket; // Keep param name for backward compatibility
+    const twoFaSessionData = params.twoFaSessionData; // Session data passed back from UI
     const isShowAll = !!params.isShowAll;
 
     // try to login
     if (notificationUrl && emailCode) {
       try {
-        await miCloud.loginTwoFa(notificationUrl, emailCode);
+        // Restore 2FA session data from UI
+        if (twoFaSessionData) {
+          miCloud._twoFaContext = twoFaSessionData.context;
+          miCloud._twoFaIdentitySession = twoFaSessionData.identitySession;
+          miCloud._twoFaFlag = twoFaSessionData.flag;
+        }
+
+        await miCloud.loginTwoFa(emailCode);
       } catch (err) {
         return {
           success: false,
@@ -50,10 +58,16 @@ class UiServer extends HomebridgePluginUiServer {
         await miCloud.login(username, password);
       } catch (err) {
         if (err instanceof Errors.TwoFactorRequired) {
+          // Return 2FA session data to UI for storage
           return {
             success: false,
-            error: 'Two factor authentication required. An email with a verification code will be sent automatically. Please check your email, enter the code below, and retry login.',
-            url: err.notificationUrl
+            error: 'Two factor authentication required. An email with a verification code has been sent to your registered email address. Please check your email, enter the code below, and retry login.',
+            url: err.notificationUrl,
+            twoFaSessionData: {
+              context: miCloud._twoFaContext,
+              identitySession: miCloud._twoFaIdentitySession,
+              flag: miCloud._twoFaFlag
+            }
           }
         }
 
@@ -152,10 +166,18 @@ class UiServer extends HomebridgePluginUiServer {
     const password = params.password;
     const notificationUrl = params.verifyUrl; // Keep param name for backward compatibility
     const emailCode = params.twoFaTicket; // Keep param name for backward compatibility
+    const twoFaSessionData = params.twoFaSessionData; // Session data passed back from UI
 
     if (notificationUrl && emailCode) {
       try {
-        await miCloud.loginTwoFa(notificationUrl, emailCode);
+        // Restore 2FA session data from UI
+        if (twoFaSessionData) {
+          miCloud._twoFaContext = twoFaSessionData.context;
+          miCloud._twoFaIdentitySession = twoFaSessionData.identitySession;
+          miCloud._twoFaFlag = twoFaSessionData.flag;
+        }
+
+        await miCloud.loginTwoFa(emailCode);
       } catch (err) {
         return {
           success: false,
@@ -167,10 +189,16 @@ class UiServer extends HomebridgePluginUiServer {
         await miCloud.login(username, password);
       } catch (err) {
         if (err instanceof Errors.TwoFactorRequired) {
+          // Return 2FA session data to UI for storage
           return {
             success: false,
-            error: 'Two factor authentication required. An email with a verification code will be sent automatically. Please check your email, enter the code below, and retry login.',
-            url: err.notificationUrl
+            error: 'Two factor authentication required. An email with a verification code has been sent to your registered email address. Please check your email, enter the code below, and retry login.',
+            url: err.notificationUrl,
+            twoFaSessionData: {
+              context: miCloud._twoFaContext,
+              identitySession: miCloud._twoFaIdentitySession,
+              flag: miCloud._twoFaFlag
+            }
           }
         }
 

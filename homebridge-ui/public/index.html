@@ -410,6 +410,9 @@
       return ' - ';
     }
 
+    // Store 2FA session data for getAllDevices
+    let twoFaSessionDataForGetAllDevices = null;
+
     // get all cloud devices
     $('#getAllDevices').on('click', function(e) {
       e.preventDefault();
@@ -441,6 +444,7 @@
           password,
           verifyUrl,
           twoFaTicket,
+          twoFaSessionData: twoFaSessionDataForGetAllDevices,
           isShowAll
         }).then(async data => {
           if (data.success && data.devices && data.devices.length > 0) {
@@ -462,6 +466,10 @@
           } else if (!data.success && data.url) {
             homebridge.toast.error(data.error, 'Login Error');
             twoFactorAuthLink.attr('href', data.url);
+            // Store session data returned from server
+            if (data.twoFaSessionData) {
+              twoFaSessionDataForGetAllDevices = data.twoFaSessionData;
+            }
             $('.two-factor-section').show();
           } else if ((typeof data.success === 'undefined' || data.success === false) && data.error) {
             homebridge.toast.error(data.error, 'Login Error');
@@ -483,6 +491,9 @@
         homebridge.toast.error('A username and password must be provided.', 'Error');
       }
     });
+
+    // Store 2FA session data for loginToMiCloud
+    let twoFaSessionDataForLoginToMiCloud = null;
 
     // login to MiCloud
     $('#loginToMiCloud').on('click', function(e) {
@@ -508,7 +519,8 @@
           username,
           password,
           verifyUrl,
-          twoFaTicket
+          twoFaTicket,
+          twoFaSessionData: twoFaSessionDataForLoginToMiCloud
         }).then(async data => {
           if (data.success) {
             await updateCachedMiCloudSessionInfo();
@@ -517,6 +529,10 @@
           } else if (!data.success && data.url) {
             homebridge.toast.warning(data.error, 'Login Error');
             twoFactorAuthLink.attr('href', data.url);
+            // Store session data returned from server
+            if (data.twoFaSessionData) {
+              twoFaSessionDataForLoginToMiCloud = data.twoFaSessionData;
+            }
             $('.two-factor-section-micloud-session').show();
           } else if ((typeof data.success === 'undefined' || data.success === false) && data.error) {
             homebridge.toast.error(data.error, 'Login Error');
