@@ -515,7 +515,7 @@
             homebridge.toast.success('Successfully cached the MiCloud session! You may now use it for device control.');
             $('.micloud-session.miot-message').show();
           } else if (!data.success && data.url) {
-            homebridge.toast.error(data.error, 'Login Error');
+            homebridge.toast.warning(data.error, 'Login Error');
             twoFactorAuthLink.attr('href', data.url);
             $('.two-factor-section-micloud-session').show();
           } else if ((typeof data.success === 'undefined' || data.success === false) && data.error) {
